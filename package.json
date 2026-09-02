@@ -1,0 +1,12 @@
+{
+  "name": "agent-site",
+  "version": "1.0.0",
+  "description": "Opportunity Discovery Agent",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
