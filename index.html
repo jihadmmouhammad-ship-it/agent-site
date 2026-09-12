@@ -32,3 +32,261 @@
     </a>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وكيل اكتشاف الفرص</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: #ffffff;
+            line-height: 1.6;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        h1 span {
+            color: #4ade80;
+        }
+
+        .intro {
+            max-width: 760px;
+            margin: 0 auto 30px;
+            color: #aab5ca;
+            font-size: 18px;
+        }
+
+        .agent-box {
+            max-width: 760px;
+            margin: 30px auto;
+            background: #121a2e;
+            border: 1px solid #26324d;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: right;
+        }
+
+        .agent-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #chat-box {
+            height: 300px;
+            overflow-y: auto;
+            background: #0b1020;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 12px;
+            white-space: pre-wrap;
+        }
+
+        .user-message {
+            background: #1d4ed8;
+            text-align: right;
+        }
+
+        .agent-message {
+            background: #26324d;
+            text-align: right;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #ffffff;
+            color: #111827;
+        }
+
+        #send-button {
+            background: #4ade80;
+            color: #07130b;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 16px 30px;
+            font-size: 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .whatsapp-btn:hover {
+            background: #22c55e;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .input-area {
+                flex-direction: column;
+            }
+
+            #send-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>اكتشف <span>فرصتك القادمة</span></h1>
+
+    <p class="intro">
+        ابحث عن فرص الأعمال المحلية ذات القيمة العالية، وحلل الوجود الرقمي،
+        واكتشف فرص التحسين والذكاء الاصطناعي والأتمتة.
+    </p>
+
+    <div class="agent-box">
+        <h2>🤖 وكيل اكتشاف الفرص V1.0</h2>
+
+        <div id="chat-box">
+            <div class="message agent-message">
+                مرحباً بك. أنا وكيل اكتشاف الفرص. أخبرني عن النشاط التجاري أو الفرصة التي تريد تحليلها.
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input
+                id="message-input"
+                type="text"
+                placeholder="اكتب رسالتك للوكيل..."
+            >
+
+            <button id="send-button">
+                إرسال
+            </button>
+        </div>
+    </div>
+
+    <a
+        href="https://wa.me/96179381871?text=مرحبا اريد التحدث مع الوكيل"
+        class="whatsapp-btn"
+        target="_blank"
+    >
+        تحدث مع الوكيل على واتساب
+    </a>
+
+    <script>
+        const BACKEND_URL = window.location.origin;
+
+        const chatBox = document.getElementById("chat-box");
+        const messageInput = document.getElementById("message-input");
+        const sendButton = document.getElementById("send-button");
+
+        function addMessage(text, type) {
+            const message = document.createElement("div");
+            message.className = "message " + type;
+            message.textContent = text;
+
+            chatBox.appendChild(message);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+
+            if (!message) {
+                return;
+            }
+
+            addMessage(message, "user-message");
+
+            messageInput.value = "";
+            sendButton.disabled = true;
+            sendButton.textContent = "جارٍ الرد...";
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/chat`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "حدث خطأ");
+                }
+
+                addMessage(
+                    data.reply || "لم يصل رد من الوكيل.",
+                    "agent-message"
+                );
+
+            } catch (error) {
+                console.error(error);
+
+                addMessage(
+                    "تعذر الاتصال بالوكيل حاليًا. يرجى المحاولة مرة أخرى.",
+                    "agent-message"
+                );
+            }
+
+            sendButton.disabled = false;
+            sendButton.textContent = "إرسال";
+            messageInput.focus();
+        }
+
+        sendButton.addEventListener("click", sendMessage);
+
+        messageInput.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+
+</body>
+</html>
