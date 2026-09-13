@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Opportunity Discovery Agent - وكيل اكتشاف الفرص</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
         .chat-container { width: 100%; max-width: 600px; background: #1e293b; border-radius: 12px; display: flex; flex-direction: column; height: 90vh; box-shadow: 0 10px 25px rgba(0,0,0,0.5); overflow: hidden; }
         .chat-header { background: #2563eb; padding: 15px; text-align: center; font-weight: bold; font-size: 1.1rem; }
@@ -30,25 +30,31 @@
 أرسل لي رابط أي موقع إلكتروني (مثال: example.com) وسأقوم بفحص سرعته واستخراج بيانات التواصل وتحديد فرصة التحسين المتاحة لك.</div>
     </div>
     <div class="input-box">
-        <input type="text" id="userInput" placeholder="أدخل رابط الموقع هنا..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendMessage()">إرسال</button>
+        <input type="text" id="userInput" placeholder="أدخل رابط الموقع هنا...">
+        <button id="sendBtn">إرسال</button>
     </div>
 </div>
 
 <script>
+    const inputField = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    sendBtn.addEventListener('click', sendMessage);
+    inputField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+
     async function sendMessage() {
-        const inputField = document.getElementById('userInput');
         const message = inputField.value.trim();
         if (!message) return;
 
         appendMessage(message, 'user-message');
         inputField.value = '';
 
-        // التحقق إذا كان المدخل يحتوي على رابط موقع
         const isUrl = message.includes('.') && !message.includes(' ');
 
         if (isUrl) {
-            appendMessage('🔍 جاري فحص الموقع واستخراج البيانات الفرص الاستثمارية...', 'agent-message');
+            appendMessage('🔍 جاري فحص الموقع واستخراج البيانات والفرص...', 'agent-message');
             try {
                 const res = await fetch(`/api/scan?url=${encodeURIComponent(message)}`);
                 const data = await res.json();
@@ -56,14 +62,14 @@
                 if (data.error) {
                     appendMessage(`❌ خطأ: ${data.error}`, 'agent-message');
                 } else {
-                    let report = `📊 **تقرير فحص الفرصة**:
-• **الرابط**: ${data.url}
-• **زمن التحميل**: ${data.loadTimeSeconds}
-• **تقييم الأداء**: ${data.isSlow ? '⚠️ بطيء (تحتاج تحسين الأداء لزيادة التحويلات)' : '✅ سريع وممتاز'}
-• **البريد الإلكتروني المكتشف**: ${data.emails.length > 0 ? data.emails.join(', ') : 'لم يتم العثور على بريد صريح'}
-• **أرقام الهواتف**: ${data.phones.length > 0 ? data.phones.join(', ') : 'لم يتم العثور على أرقام صريحة'}
+                    let report = `📊 تقرير فحص الفرصة:
+• الرابط: ${data.url}
+• زمن التحميل: ${data.loadTimeSeconds}
+• تقييم الأداء: ${data.isSlow ? '⚠️ بطيء (تحتاج تحسين الأداء)' : '✅ سريع وممتاز'}
+• البريد الإلكتروني: ${data.emails.length > 0 ? data.emails.join(', ') : 'غير متوفر'}
+• الهواتف: ${data.phones.length > 0 ? data.phones.join(', ') : 'غير متوفر'}
 
-🎯 **التوصية المقترحة للمبيعات**:
+🎯 التوصية المقترحة للمبيعات:
 ${data.isSlow ? 'تواصل مع صاحب الموقع وعرض خدمة تسريع الأداء للرفع من نسبة المبيعات!' : 'الموقع أداؤه ممتاز، يمكن عرض خدمات التسويق وإدارة الحملات الإعلانية.'}`;
 
                     appendMessage(report, 'agent-message');
@@ -72,7 +78,7 @@ ${data.isSlow ? 'تواصل مع صاحب الموقع وعرض خدمة تسر�
                 appendMessage('❌ تعذر الاتصال بالسيرفر لفحص الموقع.', 'agent-message');
             }
         } else {
-            appendMessage('يرجى كتابة رابط موقع صريح (مثل: google.com أو mysite.com) لتنفيذ عملية الفحص وتوليد الفرص.', 'agent-message');
+            appendMessage('يرجى كتابة رابط موقع صريح (مثل: google.com) لتنفيذ عملية الفحص.', 'agent-message');
         }
     }
 
@@ -83,10 +89,6 @@ ${data.isSlow ? 'تواصل مع صاحب الموقع وعرض خدمة تسر�
         msgDiv.innerText = text;
         chatBox.appendChild(msgDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function handleKeyPress(e) {
-        if (e.key === 'Enter') sendMessage();
     }
 </script>
 
