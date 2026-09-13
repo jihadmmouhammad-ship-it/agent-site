@@ -1,196 +1,94 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>وكيل اكتشاف الفرص</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #0b1020;
-      color: #ffffff;
-      line-height: 1.6;
-      text-align: center;
-      padding: 60px 20px;
-    }
-
-    h1 {
-      font-size: 40px;
-      margin-bottom: 20px;
-    }
-
-    h1 span {
-      color: #4ade80;
-    }
-
-    .intro {
-      max-width: 760px;
-      margin: 0 auto 30px;
-      color: #aab5ca;
-      font-size: 18px;
-    }
-
-    .agent-box {
-      max-width: 760px;
-      margin: 30px auto;
-      background: #121a2e;
-      border: 1px solid #26324d;
-      border-radius: 18px;
-      padding: 25px;
-      text-align: right;
-    }
-
-    .agent-box h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    #chat-box {
-      height: 300px;
-      overflow-y: auto;
-      background: #0b1020;
-      border: 1px solid #26324d;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-
-    .msg {
-      margin-bottom: 12px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      max-width: 80%;
-      white-space: pre-wrap;
-    }
-
-    .user {
-      background: #2563eb;
-      color: #fff;
-      margin-left: auto;
-    }
-
-    .bot {
-      background: #1e293b;
-      color: #e2e8f0;
-      margin-right: auto;
-    }
-
-    .input-group {
-      display: flex;
-      gap: 10px;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      padding: 12px 16px;
-      border-radius: 10px;
-      border: 1px solid #26324d;
-      background: #0b1020;
-      color: #fff;
-      font-size: 16px;
-    }
-
-    button {
-      padding: 12px 24px;
-      border-radius: 10px;
-      border: none;
-      background: #4ade80;
-      color: #0b1020;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #22c55e;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opportunity Discovery Agent - وكيل اكتشاف الفرص</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        .chat-container { width: 100%; max-width: 600px; background: #1e293b; border-radius: 12px; display: flex; flex-direction: column; height: 90vh; box-shadow: 0 10px 25px rgba(0,0,0,0.5); overflow: hidden; }
+        .chat-header { background: #2563eb; padding: 15px; text-align: center; font-weight: bold; font-size: 1.1rem; }
+        .chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .message { padding: 10px 14px; border-radius: 8px; max-width: 85%; line-height: 1.5; font-size: 0.95rem; white-space: pre-wrap; }
+        .user-message { background: #2563eb; color: #fff; align-self: flex-end; border-bottom-left-radius: 2px; }
+        .agent-message { background: #334155; color: #f8fafc; align-self: flex-start; border-bottom-right-radius: 2px; }
+        .input-box { display: flex; padding: 10px; background: #0f172a; gap: 8px; }
+        input { flex: 1; padding: 12px; border: 1px solid #334155; border-radius: 6px; background: #1e293b; color: #fff; outline: none; }
+        button { padding: 12px 20px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #1d4ed8; }
+    </style>
 </head>
 <body>
 
-  <nav style="display: flex; justify-content: space-between; max-width: 760px; margin: 0 auto 30px; border-bottom: 1px solid #26324d; padding-bottom: 15px;">
-    <div style="font-size: 20px; font-weight: bold; color: #4ade80;">الفرص</div>
-    <div>
-      <a href="#features" style="color: #aab5ca; text-decoration: none; margin-left: 15px;">الميزات</a>
-      <a href="#about" style="color: #aab5ca; text-decoration: none; margin-left: 15px;">عن المنصة</a>
-      <a href="#contact" style="color: #aab5ca; text-decoration: none;">اتصل بنا</a>
+<div class="chat-container">
+    <div class="chat-header">
+        🤖 Opportunity Discovery Agent v1.0
     </div>
-  </nav>
-
-  <small style="color: #4ade80; font-weight: bold;">ذكاء الأعمال المدعوم بالذكاء الاصطناعي</small>
-  <h1 style="margin-top: 10px;">اكتشف فرصتك <span>القادمة</span></h1>
-  
-  <p class="intro">
-    ابحث عن فرص الأعمال المحلية ذات القيمة العالية، وقم بتحليل التواجد الرقمي، وابتكر استراتيجيات مبيعات أكثر ذكاءً.
-  </p>
-
-  <div class="agent-box">
-    <h2>وكيل اكتشاف الفرص الإصدار 1.0</h2>
-    <div id="chat-box">
-      <div class="msg bot">مرحباً بك! أنا وكيل اكتشاف الفرص. كيف يمكنني مساعدتك في تحليل وتطوير عملك اليوم؟</div>
+    <div class="chat-box" id="chatBox">
+        <div class="message agent-message">مرحباً بك! أنا وكيل اكتشاف الفرص والمبيعات.
+أرسل لي رابط أي موقع إلكتروني (مثال: example.com) وسأقوم بفحص سرعته واستخراج بيانات التواصل وتحديد فرصة التحسين المتاحة لك.</div>
     </div>
-    <div class="input-group">
-      <input type="text" id="userInput" placeholder="اكتب استفسارك هنا..." onkeypress="if(event.key === 'Enter') sendMessage()">
-      <button onclick="sendMessage()">إرسال</button>
+    <div class="input-box">
+        <input type="text" id="userInput" placeholder="أدخل رابط الموقع هنا..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">إرسال</button>
     </div>
-  </div>
+</div>
 
-  <div style="max-width: 760px; margin: 40px auto 0; text-align: right; background: #121a2e; padding: 25px; border-radius: 18px; border: 1px solid #26324d;">
-    <h3 style="color: #4ade80; margin-bottom: 15px;">ما يفعله الوكيل؟</h3>
-    <p style="color: #aab5ca; margin-bottom: 15px;">أدوات ذكية مصممة لاكتشاف وتحويل فرص الأعمال.</p>
-    
-    <ul style="list-style: none; color: #e2e8f0; line-height: 2;">
-      <li>🔹 <strong>اكتشاف الأعمال:</strong> اكتشف الشركات المحلية الواعدة وحدد أفضل الفرص.</li>
-      <li>🔹 <strong>التدقيق الرقمي:</strong> تحليل المواقع الإلكترونية، والتواجد على الإنترنت، ونقاط تسرب الإيرادات المحتملة.</li>
-      <li>🔹 <strong>استراتيجية الذكاء الاصطناعي:</strong> قم بإنشاء استراتيجيات وعروض تقديمية وحلول موصى بها مصممة خصيصًا.</li>
-    </ul>
-  </div>
-
-  <script>
+<script>
     async function sendMessage() {
-      const input = document.getElementById('userInput');
-      const text = input.value.trim();
-      if (!text) return;
+        const inputField = document.getElementById('userInput');
+        const message = inputField.value.trim();
+        if (!message) return;
 
-      const chatBox = document.getElementById('chat-box');
-      
-      // إضافة رسالة المستخدم
-      const userMsg = document.createElement('div');
-      userMsg.className = 'msg user';
-      userMsg.textContent = text;
-      chatBox.appendChild(userMsg);
+        appendMessage(message, 'user-message');
+        inputField.value = '';
 
-      input.value = '';
-      chatBox.scrollTop = chatBox.scrollHeight;
+        // التحقق إذا كان المدخل يحتوي على رابط موقع
+        const isUrl = message.includes('.') && !message.includes(' ');
 
-      // إرسال الطلب للسيرفر
-      try {
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text })
-        });
-        const data = await response.json();
-        
-        const botMsg = document.createElement('div');
-        botMsg.className = 'msg bot';
-        botMsg.textContent = data.reply || data.error || 'حدث خطأ في الاستجابة';
-        chatBox.appendChild(botMsg);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      } catch (err) {
-        const errorMsg = document.createElement('div');
-        errorMsg.className = 'msg bot';
-        errorMsg.textContent = 'تعذر الاتصال بالسيرفر حالياً.';
-        chatBox.appendChild(errorMsg);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
+        if (isUrl) {
+            appendMessage('🔍 جاري فحص الموقع واستخراج البيانات الفرص الاستثمارية...', 'agent-message');
+            try {
+                const res = await fetch(`/api/scan?url=${encodeURIComponent(message)}`);
+                const data = await res.json();
+
+                if (data.error) {
+                    appendMessage(`❌ خطأ: ${data.error}`, 'agent-message');
+                } else {
+                    let report = `📊 **تقرير فحص الفرصة**:
+• **الرابط**: ${data.url}
+• **زمن التحميل**: ${data.loadTimeSeconds}
+• **تقييم الأداء**: ${data.isSlow ? '⚠️ بطيء (تحتاج تحسين الأداء لزيادة التحويلات)' : '✅ سريع وممتاز'}
+• **البريد الإلكتروني المكتشف**: ${data.emails.length > 0 ? data.emails.join(', ') : 'لم يتم العثور على بريد صريح'}
+• **أرقام الهواتف**: ${data.phones.length > 0 ? data.phones.join(', ') : 'لم يتم العثور على أرقام صريحة'}
+
+🎯 **التوصية المقترحة للمبيعات**:
+${data.isSlow ? 'تواصل مع صاحب الموقع وعرض خدمة تسريع الأداء للرفع من نسبة المبيعات!' : 'الموقع أداؤه ممتاز، يمكن عرض خدمات التسويق وإدارة الحملات الإعلانية.'}`;
+
+                    appendMessage(report, 'agent-message');
+                }
+            } catch (err) {
+                appendMessage('❌ تعذر الاتصال بالسيرفر لفحص الموقع.', 'agent-message');
+            }
+        } else {
+            appendMessage('يرجى كتابة رابط موقع صريح (مثل: google.com أو mysite.com) لتنفيذ عملية الفحص وتوليد الفرص.', 'agent-message');
+        }
     }
-  </script>
+
+    function appendMessage(text, className) {
+        const chatBox = document.getElementById('chatBox');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${className}`;
+        msgDiv.innerText = text;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+</script>
+
 </body>
 </html>
