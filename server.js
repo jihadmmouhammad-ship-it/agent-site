@@ -15,7 +15,6 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// مسار الوكيل والذكاء الاصطناعي
 app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
@@ -24,9 +23,6 @@ app.post('/api/chat', async (req, res) => {
     }
 
     const systemInstruction = `أنت وكيل اكتشاف الفرص V1.0، وكيل ذكاء أعمال متخصص في اكتشاف فرص العمل لزيادة المبيعات للمتاجر والشركات المحلية.`;
-
-    // هنا يتم استدعاء API الخاص بالذكاء الاصطناعي
-    // ...
 
     res.json({ reply: 'تم استقبال طلبك بنجاح' });
   } catch (error) {
