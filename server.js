@@ -77,8 +77,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
                 quantity: 1,
             }],
             mode: 'payment',
-            success_url: `https://agent-site-rcf8.onrender.com/success.html`,
-            cancel_url: `https://agent-site-rcf8.onrender.com/cancel.html`,
+            success_url: `https://agent-sitelb.onrender.com/success.html`,
+            cancel_url: `https://agent-sitelb.onrender.com/cancel.html`,
         });
 
         res.json({ url: session.url });
