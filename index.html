@@ -26,8 +26,8 @@
         🤖 Opportunity Discovery Agent v1.0
     </div>
     <div class="chat-box" id="chatBox">
-        <div class="message agent-message">مرحباً بك! أنا وكيل اكتشاف الفرص والمبيعات.
-أرسل لي رابط أي موقع إلكتروني (مثال: example.com) وسأقوم بفحص سرعته واستخراج بيانات التواصل وتحديد فرصة التحسين المتاحة لك.</div>
+        <div class="message agent-message">مرحباً بك! أنا وكيل اكتشاف الفرص والمبيعات المدعوم بالذكاء الاصطناعي.
+أرسل لي رابط أي موقع إلكتروني (مثال: example.com) وسأقوم بمقاطعة البيانات وتوليد اقتراح مبيعات احترافي موجه للعميل!</div>
     </div>
     <div class="input-box">
         <input type="text" id="userInput" placeholder="أدخل رابط الموقع هنا...">
@@ -54,7 +54,7 @@
         const isUrl = message.includes('.') && !message.includes(' ');
 
         if (isUrl) {
-            appendMessage('🔍 جاري فحص الموقع واستخراج البيانات والفرص...', 'agent-message');
+            appendMessage('🔍 جاري فحص الموقع واستخراج البيانات وصياغة التوصية عبر الذكاء الاصطناعي...', 'agent-message');
             try {
                 const res = await fetch(`/api/scan?url=${encodeURIComponent(message)}`);
                 const data = await res.json();
@@ -64,13 +64,13 @@
                 } else {
                     let report = `📊 تقرير فحص الفرصة:
 • الرابط: ${data.url}
+• العنوان: ${data.title}
 • زمن التحميل: ${data.loadTimeSeconds}
-• تقييم الأداء: ${data.isSlow ? '⚠️ بطيء (تحتاج تحسين الأداء)' : '✅ سريع وممتاز'}
 • البريد الإلكتروني: ${data.emails.length > 0 ? data.emails.join(', ') : 'غير متوفر'}
 • الهواتف: ${data.phones.length > 0 ? data.phones.join(', ') : 'غير متوفر'}
 
-🎯 التوصية المقترحة للمبيعات:
-${data.isSlow ? 'تواصل مع صاحب الموقع وعرض خدمة تسريع الأداء للرفع من نسبة المبيعات!' : 'الموقع أداؤه ممتاز، يمكن عرض خدمات التسويق وإدارة الحملات الإعلانية.'}`;
+💡 خطابات المبيعات المقترحة (Gemini AI):
+${data.salesPitch}`;
 
                     appendMessage(report, 'agent-message');
                 }
