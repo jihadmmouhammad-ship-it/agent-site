@@ -29,7 +29,7 @@
         .intro {
             text-align: center;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
         .form-group {
             margin-bottom: 20px;
@@ -77,100 +77,93 @@
 
 <div class="container">
     <h1>وكيل اكتشاف الفرص الرقمية</h1>
-    <p class="intro">املأ النموذج أدناه لطلب فحص موقعك وتحليل أداء المبيعات والفرص التسويقية.</p>
+    <p class="intro">امْلأ النموذج أدناه لطلب فحص موقعك وتحليل أداء المبيعات والفرص التسويقية.</p>
 
     <form id="orderForm">
         <div class="form-group">
-            <label for="customerName">اسم العميل أو النشاط التجاري:</label>
-            <input type="text" id="customerName" required placeholder="مثال: مطعم الشام">
+            <label for="customerName">الاسم الكامل</label>
+            <input type="text" id="customerName" required placeholder="أدخل اسمك الكامل">
         </div>
 
         <div class="form-group">
-            <label for="customerEmail">البريد الإلكتروني:</label>
-            <input type="email" id="customerEmail" required placeholder="name@example.com">
+            <label for="customerEmail">البريد الإلكتروني</label>
+            <input type="email" id="customerEmail" required placeholder="example@domain.com">
         </div>
 
         <div class="form-group">
-            <label for="customerPhone">رقم الهاتف:</label>
-            <input type="tel" id="customerPhone" required placeholder="مثال: +963911111111">
+            <label for="customerPhone">رقم الهاتف</label>
+            <input type="text" id="customerPhone" required placeholder="09xxxxxxxx">
         </div>
 
         <div class="form-group">
-            <label for="financialCompany">الشركة المالية / طريقة الدفع:</label>
+            <label for="financialCompany">الشركة المالية / طريقة الدفع</label>
             <select id="financialCompany" required>
-                <option value="">اختر الشركة أو القناة المالية</option>
+                <option value="">اختر الشركة أو أداة المالية</option>
+                <option value="Stripe">Stripe (الدفع الإلكتروني الآمن)</option>
                 <option value="Syriatel Cash">سيريتل كاش (Syriatel Cash)</option>
-                <option value="MTN Cash">إم تي إن كاش (MTN Cash)</option>
+                <option value="MTN Cash">إم تى إن كاش (MTN Cash)</option>
                 <option value="Bemo Bank">بنك بيمو (Bemo Bank)</option>
                 <option value="International Wire">تحويل دولي / أخرى</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="planName">اختر الباقة المطلوبة:</label>
+            <label for="planName">اختر الباقة المطلوبة</label>
             <select id="planName" required>
-                <option value="باقة الفحص السريع">باقة الفحص السريع</option>
-                <option value="الباقة الشاملة المتقدمة">الباقة الشاملة المتقدمة</option>
-                <option value="باقة استشارة النمو للأعمال">باقة استشارة النمو للأعمال</option>
+                <option value="التفحص السريع">الباقة السريعة - تفحص الفحص السريع</option>
+                <option value="الباقة الشاملة المتقدمة">الباقة الشاملة المتقدمة - تحليل الأداء</option>
+                <option value="استشارة النمو الأعمال">استشارة النمو الأعمال - باقة الاستشارات</option>
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="paymentReceiptRef">رقم مرجع الدفع / رقم الإيصال:</label>
-            <input type="text" id="paymentReceiptRef" required placeholder="أدخل رقم عملية التحويل أو الإيصال">
-        </div>
-
-        <button type="submit">إرسال الطلب وبدء المراجعة</button>
+        <button type="submit">الانتقال إلى الدفع الآمن عبر Stripe</button>
     </form>
 
     <div id="responseMessage"></div>
 </div>
 
 <script>
-    document.getElementById('orderForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-        const customerName = document.getElementById('customerName').value;
-        const customerEmail = document.getElementById('customerEmail').value;
-        const customerPhone = document.getElementById('customerPhone').value;
-        const financialCompany = document.getElementById('financialCompany').value;
-        const planName = document.getElementById('planName').value;
-        const paymentReceiptRef = document.getElementById('paymentReceiptRef').value;
-        const responseDiv = document.getElementById('responseMessage');
+    const customerName = document.getElementById('customerName').value;
+    const customerEmail = document.getElementById('customerEmail').value;
+    const customerPhone = document.getElementById('customerPhone').value;
+    const financialCompany = document.getElementById('financialCompany').value;
+    const planName = document.getElementById('planName').value;
+    const responseDiv = document.getElementById('responseMessage');
 
-        responseDiv.style.display = 'block';
-        responseDiv.className = '';
-        responseDiv.innerText = 'جاري إرسال الطلب...';
+    responseDiv.style.display = 'block';
+    responseDiv.className = '';
+    responseDiv.innerText = 'جاري توجيهك إلى بوابة الدفع الآمنة...';
 
-        try {
-            const res = await fetch('/api/create-order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    customerName,
-                    customerEmail,
-                    customerPhone,
-                    financialCompany,
-                    planName,
-                    paymentReceiptRef
-                })
-            });
+    try {
+        const res = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                customerName,
+                customerEmail,
+                customerPhone,
+                financialCompany,
+                planName
+            })
+        });
 
-            const data = await res.json();
+        const data = await res.json();
 
-            if (data.success) {
-                responseDiv.className = 'success';
-                responseDiv.innerText = data.message + ' (رقم الطلب: ' + data.orderId + ')';
-                document.getElementById('orderForm').reset();
-            } else {
-                responseDiv.className = 'error';
-                responseDiv.innerText = 'حدث خطأ: ' + data.message;
-            }
-        } catch (err) {
+        if (data.url) {
+            // توجيه العميل مباشرة إلى صفحة الدفع الخاصة بـ Stripe
+            window.location.href = data.url;
+        } else {
             responseDiv.className = 'error';
-            responseDiv.innerText = 'فشل الاتصال بالخادم. يجدر التحقق من الاتصال.';
+            responseDiv.innerText = data.error || 'حدث خطأ أثناء إنشاء جلسة الدفع.';
         }
-    });
+    } catch (err) {
+        responseDiv.className = 'error';
+        responseDiv.innerText = 'فشل الاتصال بالخادم، يرجى التحقق من الاتصال.';
+    }
+});
 </script>
 
 </body>
