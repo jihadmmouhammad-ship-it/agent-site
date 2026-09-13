@@ -7,7 +7,7 @@ const { GoogleGenAI } = require('@google/genai');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// إعداد عميل Gemini
+// إعداد كائن Gemini
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 app.use(express.static(path.join(__dirname)));
@@ -47,7 +47,6 @@ app.get('/api/scan', async (req, res) => {
         const foundEmails = [...new Set(html.match(emailRegex) || [])];
         const foundPhones = [...new Set(html.match(phoneRegex) || [])];
 
-        // صياغة التوصية عبر Gemini
         let salesPitch = '';
         if (process.env.GEMINI_API_KEY) {
             try {
@@ -63,6 +62,7 @@ app.get('/api/scan', async (req, res) => {
                 });
                 salesPitch = aiResponse.text;
             } catch (aiErr) {
+                console.error(aiErr);
                 salesPitch = 'تعذر الاتصال بـ Gemini، التوصية القياسية: يُنصح بالتواصل مع العميل لتحسين الأداء الرقمي.';
             }
         } else {
