@@ -2,9 +2,10 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'];
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
     let event;
 
     try {
@@ -61,7 +62,6 @@ app.post('/api/create-order', (req, res) => {
 
 app.post('/api/create-checkout-session', async (req, res) => {
     try {
-        const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
         const { planName } = req.body;
 
         const session = await stripe.checkout.sessions.create({
